@@ -170,22 +170,22 @@ export default function DocumentSettings({
     setMovedItems([...movedItems, ...newMovedItems]);
 
     let newAvailableDocs = JSON.parse(JSON.stringify(availableDocs));
-    let newWorkspaceDocs = JSON.parse(JSON.stringify(workspaceDocs));
-
-    for (const itemId of Object.keys(selectedItems)) {
-      let foundItem = null;
-      let foundFolderIndex = null;
-
-      newAvailableDocs.items = newAvailableDocs.items.map(
-        (folder, folderIndex) => {
-          const remainingItems = folder.items.filter((file) => {
-            const match = file.id === itemId;
-            if (match) {
-              foundItem = { ...file };
-              foundFolderIndex = folderIndex;
-            }
-            return !match;
-          });
+    newAvailableDocs.items = newAvailableDocs.items.reduce((acc, folder) => {
+      const remainingItems = folder.items.filter((file) => {
+        const match = selectedItems[file.id];
+        if (match) {
+          newMovedItems.push({ ...file, folderName: folder.name });
+        }
+        return !match;
+      });
+    
+      acc.push({
+        ...folder,
+        items: remainingItems,
+      });
+    
+      return acc;
+    }, []);
 
           return {
             ...folder,
