@@ -151,13 +151,13 @@ export default function DocumentSettings({
       const embeddingModel =
         process.env.EMBEDDING_MODEL_PREF || "text-embedding-ada-002";
       let COST_PER_TOKEN;
+const MODEL_COSTS = {
+  "text-embedding-ada-002": ADA_COST_PER_TOKEN,
+  "text-embedding-3-small": TEXT_EMBEDDING_3_SMALL_COST_PER_TOKEN,
+  "text-embedding-3-large": TEXT_EMBEDDING_3_LARGE_COST_PER_TOKEN
+};
 
-      switch (embeddingModel) {
-        case "text-embedding-3-small":
-          COST_PER_TOKEN = TEXT_EMBEDDING_3_SMALL_COST_PER_TOKEN;
-          break;
-        case "text-embedding-3-large":
-          COST_PER_TOKEN = TEXT_EMBEDDING_3_LARGE_COST_PER_TOKEN;
+const COST_PER_TOKEN = MODEL_COSTS[embeddingModel];
           break;
         default:
           COST_PER_TOKEN = ADA_COST_PER_TOKEN;
