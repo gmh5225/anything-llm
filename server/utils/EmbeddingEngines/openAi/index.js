@@ -1,9 +1,9 @@
 const { toChunks } = require("../../helpers");
 
 class OpenAiEmbedder {
-  constructor() {
-    const { Configuration, OpenAIApi } = require("openai");
-    if (!process.env.OPEN_AI_KEY) throw new Error("No OpenAI API key was set.");
+  const ALLOWED_MODELS = ["text-embedding-ada-002", "text-embedding-3-small", "text-embedding-3-large"];
+  const model = ALLOWED_MODELS.includes(process.env.EMBEDDING_MODEL_PREF) ? process.env.EMBEDDING_MODEL_PREF : "text-embedding-ada-002";
+  this.openai.createEmbedding({ model: model, input: chunk, })
     const config = new Configuration({
       apiKey: process.env.OPEN_AI_KEY,
     });
